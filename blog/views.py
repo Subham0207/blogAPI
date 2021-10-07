@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import blog
-from .serializer import blogSerializer,filterSerializer
+from .serializer import blogSerializer,filterSerializer, idSerializer
 
 # Create your views here.
 class blogView(APIView):
@@ -36,4 +36,17 @@ class blog_returnFirstTen_view(APIView):
         serializer = blogSerializer(blog.objects.all().order_by('-date')[:10],many=True)
         return Response(serializer.data)
 
+#This implementation Update is not recommended
+class blog_incViews_view(APIView):
+    def put(self,req):
+        #getting the entry using id
+        serializer = idSerializer(data = req.data)
+        if serializer.is_valid():
+            queryset = blog.objects.filter(id=serializer.data["id"])
+            serializer2 = blogSerializer(queryset,many=True)
+            serializer2.data[0]["views"] += 1#increamenting viewcolumn
 
+            #setting the view coloumn using id
+            blog.objects.filter(id=serializer.data["id"]).update(views=serializer2.data[0]["views"])
+            
+            return Response(serializer2.data)

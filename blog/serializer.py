@@ -9,3 +9,8 @@ class blogSerializer(serializers.ModelSerializer):
 
 class filterSerializer(serializers.Serializer):
     search = serializers.CharField(max_length=50)
+
+
+
+class idSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
