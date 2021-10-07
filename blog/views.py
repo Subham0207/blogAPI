@@ -29,3 +29,11 @@ class blog_filterbytitle_view(APIView):
             # print("Hello ",queryset)#data is searched successfully
             serializer2 = blogSerializer(queryset,many=True)#queryset to dict 
             return Response(serializer2.data)#dict to jsons
+
+
+class blog_returnFirstTen_view(APIView):
+    def get(self,req):
+        serializer = blogSerializer(blog.objects.all().order_by('-date')[:10],many=True)
+        return Response(serializer.data)
+
+
