@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('employee/',views.employeelist.as_view()),
     path('employee/getDetail',views.employeeDetails.as_view()),
-    path('blog/getall',include('blog.urls')),
+    path('blog/',include('blog.urls')),
 ]

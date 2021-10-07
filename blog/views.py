@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import blog
-from .serializer import blogSerializer
+from .serializer import blogSerializer,filterSerializer
 
 # Create your views here.
 class blogView(APIView):
@@ -18,3 +18,14 @@ class blogView(APIView):
             new_blog_serializer.save()
             return Response(new_blog_serializer.data)
         return Response(new_blog_serializer.errors)
+
+
+class blog_filterbytitle_view(APIView):
+    def get(self,req):
+        serializer = filterSerializer(data = req.query_params)#json to dict
+        if serializer.is_valid():
+            # print(serializer.data['search'])
+            queryset = blog.objects.filter(title__icontains=serializer.data["search"])
+            # print("Hello ",queryset)#data is searched successfully
+            serializer2 = blogSerializer(queryset,many=True)#queryset to dict 
+            return Response(serializer2.data)#dict to jsons

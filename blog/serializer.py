@@ -6,3 +6,6 @@ class blogSerializer(serializers.ModelSerializer):
     class Meta:
         model = blog
         fields = '__all__'
+
+class filterSerializer(serializers.Serializer):
+    search = serializers.CharField(max_length=50)
