@@ -55,4 +55,3 @@ class blog_getMostViewedblog(APIView):#returns most blog with most views
     def get(self,req):
         serializer = blogSerializer(blog.objects.all().order_by("-views","-date")[:1],many=True)# "neg" means desc 
         return Response(serializer.data)
-

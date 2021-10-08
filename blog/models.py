@@ -12,6 +12,7 @@ class blog(models.Model):
     img_blog = models.ImageField()
     views = models.IntegerField(default=0)
     body = models.TextField()
+    tags = models.TextField(default="None")
 
     def __str__(self):
         return self.author
