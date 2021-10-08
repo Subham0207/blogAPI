@@ -14,3 +14,7 @@ class filterSerializer(serializers.Serializer):
 
 class idSerializer(serializers.Serializer):
     id = serializers.IntegerField()
+
+class tagSerialzier(serializers.Serializer):
+    tag = serializers.CharField()
+    

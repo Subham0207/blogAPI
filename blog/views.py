@@ -1,9 +1,10 @@
+from typing import OrderedDict
 from django.shortcuts import render
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import blog
-from .serializer import blogSerializer,filterSerializer, idSerializer
+from .serializer import blogSerializer,filterSerializer, idSerializer, tagSerialzier
 
 # Create your views here.
 class blogView(APIView):
@@ -55,3 +56,18 @@ class blog_getMostViewedblog(APIView):#returns most blog with most views
     def get(self,req):
         serializer = blogSerializer(blog.objects.all().order_by("-views","-date")[:1],many=True)# "neg" means desc 
         return Response(serializer.data)
+
+class blog_filterbyTag_view(APIView):
+    def get(self,req):
+        serializer = tagSerialzier(data = req.query_params)
+        if serializer.is_valid():
+            arr = serializer.data['tag'].split(' ')
+            # print(arr)
+            l = []
+            for i in arr:
+                queryset = blog.objects.filter(tags__icontains=i)
+                serializer2 = blogSerializer(queryset,many=True)
+                for j in range(len(serializer2.data)):
+                    if serializer2.data[j] not in l:
+                        l.append(serializer2.data[j])
+            return Response(l)
