@@ -17,4 +17,6 @@ class idSerializer(serializers.Serializer):
 
 class tagSerialzier(serializers.Serializer):
     tag = serializers.CharField()
-    
+
+class tagandtitleSerializer(serializers.Serializer):
+    tagandtitle = serializers.CharField()

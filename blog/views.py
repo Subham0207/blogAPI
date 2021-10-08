@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import blog
-from .serializer import blogSerializer,filterSerializer, idSerializer, tagSerialzier
+from .serializer import blogSerializer,filterSerializer, idSerializer, tagSerialzier, tagandtitleSerializer
 
 # Create your views here.
 class blogView(APIView):
@@ -64,6 +64,28 @@ class blog_filterbyTag_view(APIView):
             arr = serializer.data['tag'].split(' ')
             # print(arr)
             l = []
+            for i in arr:
+                queryset = blog.objects.filter(tags__icontains=i)
+                serializer2 = blogSerializer(queryset,many=True)
+                for j in range(len(serializer2.data)):
+                    if serializer2.data[j] not in l:
+                        l.append(serializer2.data[j])
+            return Response(l)
+
+class blog_filterByTagAndTitle_view(APIView):
+    def get(self,req):
+        #filter by title
+        serializer = tagandtitleSerializer(data = req.query_params)#json to dict
+        l = []
+        if serializer.is_valid():
+            queryset = blog.objects.filter(title__icontains=serializer.data["tagandtitle"])
+            serializer2 = blogSerializer(queryset,many=True)#queryset to dict 
+            l+=serializer2.data
+
+        #filter by tag        
+        serializer = tagandtitleSerializer(data = req.query_params)
+        if serializer.is_valid():
+            arr = serializer.data['tagandtitle'].split(' ')
             for i in arr:
                 queryset = blog.objects.filter(tags__icontains=i)
                 serializer2 = blogSerializer(queryset,many=True)
