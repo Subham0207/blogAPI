@@ -3,6 +3,8 @@ from django.shortcuts import render
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from blog.custom_renderer import JPEGRenderer, PNGRenderer
 from .models import blog
 from .serializer import blogSerializer,filterSerializer, idSerializer, tagSerialzier, tagandtitleSerializer
 
@@ -93,3 +95,16 @@ class blog_filterByTagAndTitle_view(APIView):
                     if serializer2.data[j] not in l:
                         l.append(serializer2.data[j])
             return Response(l)
+
+
+class blog_authorimg_View(APIView):
+    renderer_classes = [JPEGRenderer,PNGRenderer]
+    def get(self,req):
+        queryset = blog.objects.get(id=req.query_params['id']).img_author
+        return Response(queryset)
+
+class blog_blogimg_View(APIView):
+    renderer_classes = [JPEGRenderer,PNGRenderer]
+    def get(self,req):
+        queryset = blog.objects.get(id=req.query_params['id']).img_blog
+        return Response(queryset)

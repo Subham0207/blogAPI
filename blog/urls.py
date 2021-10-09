@@ -1,7 +1,7 @@
 from django.urls import path
 
 from blog.models import blog
-from .views import blogView, blog_filterbytitle_view, blog_returnFirstTen_view, blog_incViews_view, blog_getMostViewedblog, blog_filterbyTag_view, blog_filterByTagAndTitle_view
+from .views import blogView, blog_filterbytitle_view, blog_returnFirstTen_view, blog_incViews_view, blog_getMostViewedblog, blog_filterbyTag_view, blog_filterByTagAndTitle_view,blog_authorimg_View,blog_blogimg_View
 
 urlpatterns = [
     # path('blog/getAll',include('blog/urls.py')),
@@ -12,4 +12,6 @@ urlpatterns = [
     path('getall/mostviewed',blog_getMostViewedblog.as_view()),
     path('getall/bytag',blog_filterbyTag_view.as_view()),
     path('getall/bytagandtitle',blog_filterByTagAndTitle_view.as_view()),
+    path('author_img',blog_authorimg_View.as_view()),
+    path('blog_img',blog_blogimg_View.as_view()),
 ]
