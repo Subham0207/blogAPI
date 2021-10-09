@@ -34,7 +34,7 @@ class blog_filterbytitle_view(APIView):#title is passed as param
 
 class blog_returnFirstTen_view(APIView):#returns 10 latest blog
     def get(self,req):
-        serializer = blogSerializer(blog.objects.all().order_by('-date')[:10],many=True)
+        serializer = blogSerializer(blog.objects.all().order_by('-date')[:3],many=True)
         return Response(serializer.data)
 
 #This implementation of Update is not recommended
